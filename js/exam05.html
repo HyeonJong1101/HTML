@@ -5,21 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Menu Example</title>
     <style>
-      ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-      }
-      li {
+      button {
         margin: 10px;
         padding: 10px;
         background-color: gray;
         color: white;
+        border: none;
         cursor: pointer;
       }
-      li.active {
+      button.active {
         background-color: white;
         color: black;
         border: 2px solid black;
@@ -27,11 +21,9 @@
     </style>
   </head>
   <body>
-    <ul>
-      <li onmouseover="selectMenu(this)">Menu 1</li>
-      <li onmouseover="selectMenu(this)">Menu 2</li>
-      <li onmouseover="selectMenu(this)">Menu 3</li>
-    </ul>
-    <script src="exam05.js"></script>
+    <button onmouseover="selectMenu(this)">Menu 1</button>
+    <button onmouseover="selectMenu(this)">Menu 2</button>
+    <button onmouseover="selectMenu(this)">Menu 3</button>
+    <script src="exam04.js"></script>
   </body>
 </html>
