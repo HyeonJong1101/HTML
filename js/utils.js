@@ -22,3 +22,14 @@ function name() {
   console.log(n);
   alert(n + "님 안녕하세요!");
 }
+
+//수정
+function solution() {
+  let name = null;
+  while (name === null || name === "") {
+    alert("입력해주세요");
+    name = prompt("이름 입력");
+  }
+  console.log(name);
+  alert(name + "님 안녕하세요!");
+}
