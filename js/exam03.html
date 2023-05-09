@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      function input_text() {
+        let text = prompt("텍스트값을 입력해주세요");
+
+        while (text === null || text === "") {
+          alert("텍스트값을 입력해주세요");
+          text = prompt("텍스트값을 입력해주세요");
+        }
+        document.getElementById("input").innerHTML = text;
+      }
+      window.onload = input_text;  <!-- html문서가 로드되면 실행되는 이벤트 -->
+
+      function changeColor(color) {
+        alert(color+"색으로 변경됩니다");
+        document.getElementById("input").style.color = color;
+      }
+    </script>
+  </head>
+  <body>
+    <div id="input" style="text-align: center; font-size: 200px;"></div>
+    <button onclick="changeColor('red')">빨강</button>
+    <button onclick="changeColor('blue')">파랑</button>
+    <button onclick="changeColor('green')">초록</button>
+  </body>
+</html>
