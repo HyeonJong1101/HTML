@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.js"
+      integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      $(function () {
+        let checkboxes = $("input[type='checkbox']");
+        let selectAllCheckbox = $("#select-all");
+
+        // 전체선택/해제 체크박스의 이벤트 처리
+        selectAllCheckbox.on("change", function () {
+          let isChecked = selectAllCheckbox.is(":checked");
+          checkboxes.prop("checked", isChecked);
+        });
+
+        // 각 체크박스의 이벤트 처리
+        checkboxes.on("change", function () {
+          let allChecked = true;
+          checkboxes.each(function () {
+            if (!$(this).is(":checked")) {
+              allChecked = false;
+            }
+          });
+
+          selectAllCheckbox.prop("checked", allChecked);
+        });
+
+        // 로그 버튼 클릭 시 선택한 제목만 로그에 출력
+        $("#log-button").on("click", function () {
+          let checkedBoxes = checkboxes.filter(":checked");
+
+          if (checkedBoxes.length === 0) {
+            alert("선택된 항목이 없습니다.");
+            return;
+          }
+
+          let logText = "";
+          checkedBoxes.each(function () {
+            let title = $(this).closest("tr").find(".title").text();
+            logText += title + "\n";
+          });
+
+          console.log(logText);
+        });
+      });
+    </script>
+
+    <style>
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+      th {
+        border: 1px black solid;
+      }
+      td {
+        border: 1px black solid;
+      }
+    </style>
+  </head>
+
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th><input type="checkbox" id="select-all" />확인</th>
+          <th>제목</th>
+          <th>글쓴시간</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="checkbox" /></td>
+          <td class="title">제목 1</td>
+          <td class="author">11:11:11</td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" /></td>
+          <td class="title">제목 2</td>
+          <td class="author">11:11:11</td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" /></td>
+          <td class="title">제목 3</td>
+          <td class="author">11:11:11</td>
+        </tr>
+        <!-- 추가적인 항목을 여기에 추가할 수 있습니다 -->
+      </tbody>
+    </table>
+
+    <button id="log-button">로그</button>
+  </body>
+</html>
