@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.js"
+      integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      #div1 {
+        position: relative;
+        width: 220px;
+        height: 50px;
+        background-color: rgb(42, 42, 165);
+        color: aliceblue;
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+      }
+
+      #div2 {
+        position: relative;
+        width: 220px;
+        background-color: rgb(188, 186, 196);
+        display: flex;
+        flex-direction: column;
+        padding-left: 10px;
+        padding-top: 10px;
+      }
+
+      .article {
+        position: relative;
+        width: 190px;
+        background-color: white;
+        margin-bottom: 10px;
+        padding: 5px;
+      }
+    </style>
+    <script>
+      $(function () {
+        $("button").click(function () {
+          let newContent = prompt("기사 내용을 입력하세요:");
+          if (newContent) {
+            let author = prompt("작성자를 입력하세요:");
+            let $article = $("<div class='article'></div>");
+            let $author = $("<b></b>").text(author + " ");
+            $article.append($author);
+            $article.append(newContent);
+            $("#div2").append($article);
+          }
+        });
+
+        $("button").click(function () {
+          var content = $("#div2").html();
+          alert("등록되었습니다!");
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="div1">기사등록하기</div>
+    <div id="div2">
+      <div class="article" id="div3"><b>박지성</b> SBS에서 월드컵보세요!</div>
+      <div class="article" id="div4"><b>안정환</b> MBC죠...</div>
+      <div class="article" id="div5">
+        <b>이영표</b> KBS는 수신료의 가치를...
+      </div>
+    </div>
+    <button>등록하기</button>
+  </body>
+</html>

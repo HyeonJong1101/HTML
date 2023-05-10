@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.js"
+      integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .big-text {
+        font-size: 100px;
+        text-align: center;
+      }
+    </style>
+
+    <script>
+        $(function(){
+            $("#output").css("display", "none");
+
+            $("#input-button").click(function(){
+                let inputText = $("#input-text").val();
+                $("#output-text").text(inputText);
+                $("#output").css("display", "block");
+            })
+        });
+
+        function changeColor(colorCode, colorText){
+            $("#output-text").css("color", colorCode);
+            alert(colorText+"색으로 변경됩니다");
+        }
+    </script>
+  </head>
+  <body>
+    <input id="input-text" type="text" />
+    <input id="input-button" type="button" value="입력" />
+
+    <div id="output">
+      <div id="output-text" class="big-text">입력한 것</div>
+      <div>
+        <input type="button" onclick="changeColor('red', '빨강')" value="빨강" />
+        <input type="button" onclick="changeColor('blue', '파랑')" value="파랑" />
+        <input type="button" onclick="changeColor('green', '초록')" value="초록" />
+      </div>
+    </div>
+  </body>
+</html>

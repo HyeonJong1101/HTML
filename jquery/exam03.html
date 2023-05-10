@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu Example</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.js"
+      integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      button {
+        margin: 10px;
+        padding: 10px;
+        background-color: gray;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+
+      button.active {
+        background-color: white;
+        color: black;
+        border: 2px solid black;
+      }
+    </style>
+    <script>
+      $(function () {
+        $("button").click(function () {
+          let isActive = $(this).hasClass("active");
+          $("button").removeClass("active");
+          if (!isActive) {
+            $(this).addClass("active");
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <button>Menu 1</button>
+    <button>Menu 2</button>
+    <button>Menu 3</button>
+  </body>
+</html>
