@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.js"
+      integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      $(function () {
+        const pompom = $("#pompom");
+        let count = 3;
+
+        gameStart();
+
+        $("html").keydown(function (e) {
+          switch (e.key) {
+            case "ArrowLeft":
+              moveLeft();
+              break;
+            case "ArrowRight":
+              moveRight();
+              break;
+            case "ArrowDown":
+              moveDown();
+              break;
+            case "ArrowUp":
+              moveUp();
+              break;
+          }
+          console.log(e.key);
+        });
+
+        //3초후 나오기
+        function gameStart() {
+          countDown();
+
+          setTimeout(function () {
+            pompom.show();
+            //pompom.fadeIn();
+          }, 4000);
+        }
+
+        function countDown() {
+          let timer = setInterval(function () {
+            console.log(count--);
+            if (count < 0) {
+              clearInterval(timer); //이게 되..?
+            }
+          }, 1000);
+        }
+
+        //키보드 이벤트
+        function moveRight() {
+          const pompomRightMargin = $("#pompom").css("right").replace("px", "");
+          //오른쪽벽에 닿았는지
+          if (pompomRightMargin > -300) {
+            pompom.animate({ left: "+=50px" }, 0);
+          }
+        }
+
+        function moveLeft() {
+          const pompomRightMargin = $("#pompom").css("right").replace("px", "");
+
+          if (pompomRightMargin < 0) {
+            pompom.animate({ left: "-=50px" }, 0);
+          }
+        }
+
+        function moveDown() {
+          const pompomTopMargin = $("#pompom").css("top").replace("px", "");
+
+          if (pompomTopMargin < 450) {
+            pompom.animate({ top: "+=50px" }, 0);
+          }
+        }
+
+        function moveUp() {
+          const pompomTopMargin = $("#pompom").css("top").replace("px", "");
+
+          if (pompomTopMargin > 0) {
+            pompom.animate({ top: "-=50px" }, 0);
+          }
+        }
+      });
+    </script>
+
+    <style>
+      #container {
+        position: absolute;
+        width: 70px;
+        height: 100px;
+        border: 1px black solid;
+        background-color: aqua;
+      }
+
+      #pompom {
+        position: absolute;
+        width: 70px;
+        height: 100px;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <img id="pompom" src="images/character.png" />
+    </div>
+  </body>
+</html>

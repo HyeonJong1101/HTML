@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.js"
+      integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      $(function () {
+        const hero = $("#hero");
+        let isJumping = false; // 점프 중인지
+
+        gameStart();
+
+        function gameStart() {
+          setKeyboardEvent();
+        }
+
+        function jump() {
+          isJumping = true;
+          hero.animate({ bottom: "+=50px" })
+          .animate({ bottom: "-=50px" }, function(){
+            isJumping = false;
+          });
+        }
+
+        function setKeyboardEvent() {
+          $("html").keydown(function (e) {
+            switch (e.key) {
+              case " ":
+                if(!isJumping){
+                    jump();
+                }
+                break;
+            }
+            console.log(e.key);
+          });
+        }
+      });
+    </script>
+
+    <style>
+      #container {
+        position: absolute;
+        width: 70px;
+        height: 100px;
+        border: 1px black solid;
+        bottom: 0px;
+      }
+
+      #hero {
+        position: absolute;
+        width: 70px;
+        height: 100px;
+        bottom: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <img id="hero" src="images/character.png" />
+    </div>
+  </body>
+</html>
