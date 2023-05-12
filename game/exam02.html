@@ -12,21 +12,143 @@
     ></script>
 
     <script>
+      const ENEMY_SPEED_MIN = 1000;
+      const ENEMY_SPEED_MAX = 3000;
+
+      function restartGame() {
+          $("#container").fadeIn(1000);
+          //$("#gameOver-sreen").fadeOut(1000);
+          //gameStart();
+          location.reload();
+        }
+
       $(function () {
         const hero = $("#hero");
+        let enemy = $("#enemy"); // enemy를 전역 변수로 변경
+        let newEnemy; // newEnemy 변수를 전역 변수로 추가
+
         let isJumping = false; // 점프 중인지
 
         gameStart();
 
         function gameStart() {
           setKeyboardEvent();
+          enemyStart();
+          checkGameOver();
+          let isGameOver = false;
+        }
+
+        function isColliding(el1, el2) {
+          const rect1 = el1.getBoundingClientRect();
+          const rect2 = el2.getBoundingClientRect();
+
+          return !(
+            rect1.bottom < rect2.top ||
+            rect1.top > rect2.bottom ||
+            rect1.right < rect2.left ||
+            rect1.left > rect2.right
+          );
+        }
+
+        let score = 0;
+        function updateScore() {
+          score += 100;
+          $("#score").text(score);
+        }
+
+        function checkGameOver() {
+          setInterval(function () {
+            const heroLeft = Number(hero.css("left").replace("px", ""));
+            const heroRight = heroLeft + 50;
+            const heroBottom = Number(hero.css("bottom").replace("px", ""));
+
+            const enemyLeft = Number(enemy.css("left").replace("px", ""));
+            const enemyRight = enemyLeft + 20;
+            const enemyTop = 20;
+
+            const isGameOver =
+              heroLeft < enemyLeft &&
+              enemyLeft < heroRight &&
+              heroBottom < enemyTop;
+
+            console.log(isGameOver);
+
+            $(".projectile").each(function () {
+              if (isColliding(this, enemy[0])) {
+                $(this).remove(); // 투사체 제거
+                enemy.remove(); // Remove the enemy character
+
+                setTimeout(() => {
+                  // Recreate the enemy character and append it back to the container
+                  newEnemy = $("<img>") // newEnemy로 변수명 변경
+                    .attr("src", "images/enemy.gif")
+                    .attr("id", "enemy")
+                    .css("left", "630px")
+                    .css("transform", "scaleX(-1)");
+
+                  $("#container").append(newEnemy);
+                  enemy = newEnemy; // newEnemy를 enemy에 할당
+                  enemyStart(); // enemyStart 함수 호출
+                }, 000);
+                updateScore();
+              }
+            });
+
+            if (isColliding(hero[0], enemy[0])) {
+              hero.remove();
+              enemy.remove();
+            }
+
+            if (isGameOver) {
+              // Fade out the game
+              $("#container").fadeOut(1000);
+            }
+          }, 1000 / 60);
+        }
+
+        
+
+        function getRandomNumber(min, max) {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function enemyStart() {
+          //속도조절
+          const speed = getRandomNumber(1000, 3000);
+
+          //적이 오른쪽에서 왼쪽으로 이동
+          enemy.animate({ left: "-100px" }, speed, function () {
+            enemy.css("left", "700px");
+
+            enemyStart();
+          });
         }
 
         function jump() {
           isJumping = true;
-          hero.animate({ bottom: "+=50px" })
-          .animate({ bottom: "-=50px" }, function(){
-            isJumping = false;
+          hero
+            .animate({ bottom: "+=130px" })
+            .animate({ bottom: "-=130px" }, function () {
+              isJumping = false;
+            });
+        }
+
+        function shootProjectile() {
+          const projectile = $("<div>")
+            .addClass("projectile")
+            .css({
+              left: $("#hero").position().left + 60 + "px",
+              bottom:
+                $("#container").height() -
+                $("#hero").position().top -
+                80 +
+                "px",
+            });
+
+          $("#container").append(projectile);
+
+          projectile.animate({ left: "800px" }, 3000, function () {
+            $(this).remove();
           });
         }
 
@@ -34,37 +156,138 @@
           $("html").keydown(function (e) {
             switch (e.key) {
               case " ":
-                if(!isJumping){
-                    jump();
+                if (!isJumping) {
+                  jump();
                 }
+                break;
+              case "ArrowLeft":
+                moveLeft();
+                break;
+              case "ArrowRight":
+                moveRight();
+                break;
+              case "a":
+                shootProjectile();
                 break;
             }
             console.log(e.key);
           });
         }
+
+        function moveRight() {
+          const pompomRightMargin = $("#hero").css("right").replace("px", "");
+          //오른쪽벽에 닿았는지
+          if (pompomRightMargin > 30) {
+            hero.animate({ left: "+=50px" }, 0);
+          }
+        }
+
+        function moveLeft() {
+          const pompomLeftMargin = $("#hero").css("left").replace("px", "");
+
+          if (pompomLeftMargin > 0) {
+            hero.animate({ left: "-=50px" }, 0);
+          }
+        }
+
+   
       });
     </script>
 
     <style>
       #container {
         position: absolute;
-        width: 70px;
-        height: 100px;
+        width: 700px;
+        height: 400px;
         border: 1px black solid;
-        bottom: 0px;
+        overflow: hidden;
+      }
+
+      .sliding-background {
+        z-index: -1;
+        position: absolute;
+        background: url("images/back.jpg");
+        width: 300%;
+        height: 100%;
+        animation: slide 10s linear infinite;
+      }
+
+      @keyframes slide {
+        from {
+          transform: translate(0, 0);
+        }
+
+        to {
+          transform: translate(-800px, 0);
+        }
       }
 
       #hero {
         position: absolute;
-        width: 70px;
+        width: 60px;
         height: 100px;
         bottom: 0px;
+        border: 0px solid;
+        transform: scaleX(-1);
+      }
+
+      #enemy {
+        position: absolute;
+        width: 70px;
+        height: 70px;
+        bottom: 0px;
+        left: 630px;
+        transform: scaleX(-1);
+      }
+
+      #score {
+        color: white;
+        font-size: 30px;
+        text-align: center;
+      }
+
+      .projectile {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        bottom: 0px;
+        background-image: url("images/attack.png");
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
+
+      #gameOver-screen {
+        position: absolute;
+        border: 1px black solid;
+        width: 700px;
+        height: 400px;
+        color: white;
+        background-color: black;
+        font-size: 100px;
+        text-align: center;
+        z-index: -2;
+      }
+
+      #restart {
+        position: absolute;
+        width: 100px;
+        height: 50px;
+        transform: translate(-50%, -50%);
       }
     </style>
   </head>
   <body>
     <div id="container">
+      <div class="sliding-background"></div>
       <img id="hero" src="images/character.png" />
+
+      <div id="score">0</div>
+      <img id="enemy" src="images/enemy.gif" />
+    </div>
+
+    <div id="gameOver-screen">
+      game over
+      <p><input type="button" value="재시작" id="restart" onclick="restartGame()"/></p>
     </div>
   </body>
 </html>
