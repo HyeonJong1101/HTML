@@ -76,21 +76,25 @@
             $(".projectile").each(function () {
               if (isColliding(this, enemy[0])) {
                 $(this).remove(); // 투사체 제거
-                enemy.remove(); // Remove the enemy character
+                enemy.attr("src", "images/de3.gif"); // 임시 이미지 경로 설정
+                enemy.stop();
+                setTimeout(()=>{
+                  enemy.remove(); // Remove the enemy character
+                  setTimeout(() => {
+                    // Recreate the enemy character and append it back to the container
+                    newEnemy = $("<img>") // newEnemy로 변수명 변경
+                      .attr("src", "images/mv.gif")
+                      .attr("id", "enemy")
+                      .css("left", "630px");
+  
+                    $("#container").append(newEnemy);
+                    enemy = newEnemy; // newEnemy를 enemy에 할당
+                    enemyStart(); // enemyStart 함수 호출
+                  }, 0);
+                  updateScore();
 
-                setTimeout(() => {
-                  // Recreate the enemy character and append it back to the container
-                  newEnemy = $("<img>") // newEnemy로 변수명 변경
-                    .attr("src", "images/enemy.gif")
-                    .attr("id", "enemy")
-                    .css("left", "630px")
-                    .css("transform", "scaleX(-1)");
+                },500);
 
-                  $("#container").append(newEnemy);
-                  enemy = newEnemy; // newEnemy를 enemy에 할당
-                  enemyStart(); // enemyStart 함수 호출
-                }, 0);
-                updateScore();
               }
             });
 
@@ -239,7 +243,6 @@
         height: 70px;
         bottom: 0px;
         left: 630px;
-        transform: scaleX(-1);
       }
 
       #score {
@@ -298,7 +301,7 @@
         <img id="hero" src="images/character.png" />
   
         <div id="score">0</div>
-        <img id="enemy" src="images/enemy.gif" />
+        <img id="enemy" src="images/mv.gif" />
       </div>
   
       <div id="gameOver-screen">
