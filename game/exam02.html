@@ -16,11 +16,11 @@
       const ENEMY_SPEED_MAX = 3000;
 
       function restartGame() {
-          $("#container").fadeIn(1000);
-          //$("#gameOver-sreen").fadeOut(1000);
-          //gameStart();
-          location.reload();
-        }
+        $("#container").fadeIn(1000);
+        //$("#gameOver-sreen").fadeOut(1000);
+        //gameStart();
+        location.reload();
+      }
 
       $(function () {
         const hero = $("#hero");
@@ -63,7 +63,7 @@
             const heroBottom = Number(hero.css("bottom").replace("px", ""));
 
             const enemyLeft = Number(enemy.css("left").replace("px", ""));
-            const enemyRight = enemyLeft + 20;
+            const enemyRight = enemyLeft + 50;
             const enemyTop = 50;
 
             const isGameOver =
@@ -73,12 +73,14 @@
 
             console.log(isGameOver);
 
+            
+
             $(".projectile").each(function () {
               if (isColliding(this, enemy[0])) {
                 $(this).remove(); // 투사체 제거
                 enemy.attr("src", "images/de3.gif"); // 임시 이미지 경로 설정
                 enemy.stop();
-                setTimeout(()=>{
+                setTimeout(() => {
                   enemy.remove(); // Remove the enemy character
                   setTimeout(() => {
                     // Recreate the enemy character and append it back to the container
@@ -86,17 +88,17 @@
                       .attr("src", "images/mv.gif")
                       .attr("id", "enemy")
                       .css("left", "630px");
-  
+
                     $("#container").append(newEnemy);
                     enemy = newEnemy; // newEnemy를 enemy에 할당
                     enemyStart(); // enemyStart 함수 호출
                   }, 0);
                   updateScore();
-
-                },500);
-
+                }, 500);
               }
             });
+
+            
 
             if (isColliding(hero[0], enemy[0])) {
               hero.remove();
@@ -109,8 +111,6 @@
             }
           }, 1000 / 60);
         }
-
-        
 
         function getRandomNumber(min, max) {
           return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -193,8 +193,6 @@
             hero.animate({ left: "-=50px" }, 0);
           }
         }
-
-   
       });
     </script>
 
@@ -282,33 +280,62 @@
         transform: translate(-50%, -50%);
       }
 
-     #back{
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-image: url(images/smartphone.png);
-      background-repeat: no-repeat;
-      z-index: -3;
+      #back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: url(images/smartphone.png);
+        background-repeat: no-repeat;
+        z-index: -3;
+      }
 
-     }
+      #key {
+        position: absolute;
+        top: 600px;
+        font-size: 20px;
+      }
+
+      #key p span {
+        position: relative;
+        top: -60px; /* 원하는 top 위치값으로 조정하세요 */
+      }
     </style>
   </head>
   <body>
-    
     <div id="back">
       <div id="container">
         <div class="sliding-background"></div>
         <img id="hero" src="images/character.png" />
-  
+
         <div id="score">0</div>
         <img id="enemy" src="images/mv.gif" />
       </div>
-  
+
       <div id="gameOver-screen">
         game over
-        <p><input type="button" value="재시작" id="restart" onclick="restartGame()"/></p>
+        <p>
+          <input
+            type="button"
+            value="재시작"
+            id="restart"
+            onclick="restartGame()"
+          />
+        </p>
+      </div>
+
+      <div id="key">
+        <p>
+          <span>방향키 :</span>
+          <img src="images/key.png" />
+          <img src="images/key-1.png" />&nbsp&nbsp&nbsp&nbsp
+
+          <span>공격키 :</span>
+          <img src="images/key2.png" />&nbsp&nbsp&nbsp&nbsp
+
+          <span>점프키 :</span>
+          <img src="images/key3.png" />
+        </p>
       </div>
     </div>
-
   </body>
 </html>
