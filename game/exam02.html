@@ -18,6 +18,18 @@
       function restartGame() {
         $("#container").fadeIn(1000);
         location.reload();
+        playBackgroundMusic();
+      }
+
+      function playBackgroundMusic() {
+        const bgm = document.getElementById("bgm");
+        bgm.play();
+      }
+
+      function stopBackgroundMusic() {
+        const bgm = document.getElementById("bgm");
+        bgm.pause();
+        bgm.currentTime = 0;
       }
 
       $(function () {
@@ -76,15 +88,15 @@
               if (isColliding(this, enemy[0])) {
                 $(this).remove(); // 투사체 제거
                 enemy.attr("src", "images/de3.gif"); // 임시 이미지 경로 설정
-                enemy.stop(); 
+                enemy.stop();
                 setTimeout(() => {
                   enemy.remove(); //enemy죽는모션 실행후삭제
                   setTimeout(() => {
                     newEnemy = $("<img>") // newEnemy로 변수명 변경
-                    .attr("src", "images/mv.gif")
-                    .attr("id", "enemy")
-                    .css("left", "630px");
-                    
+                      .attr("src", "images/mv.gif")
+                      .attr("id", "enemy")
+                      .css("left", "630px");
+
                     $("#container").append(newEnemy);
                     enemy = newEnemy; // newEnemy를 enemy에 할당
                     enemyStart(); // enemyStart 함수 호출
@@ -298,7 +310,7 @@
 
       #key p span {
         position: relative;
-        top: -60px; 
+        top: -60px;
       }
     </style>
   </head>
@@ -338,6 +350,7 @@
           <img src="images/key3.png" />
         </p>
       </div>
+      <audio id="bgm" src="sounds/bgm.mp3" loop></audio>
     </div>
   </body>
 </html>
