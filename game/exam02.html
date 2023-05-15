@@ -17,8 +17,6 @@
 
       function restartGame() {
         $("#container").fadeIn(1000);
-        //$("#gameOver-sreen").fadeOut(1000);
-        //gameStart();
         location.reload();
       }
 
@@ -54,6 +52,7 @@
         function updateScore() {
           score += 100;
           $("#score").text(score);
+          $("#gameOver-score").text("Score: " + score);
         }
 
         function checkGameOver() {
@@ -73,32 +72,27 @@
 
             console.log(isGameOver);
 
-            
-
             $(".projectile").each(function () {
               if (isColliding(this, enemy[0])) {
                 $(this).remove(); // 투사체 제거
                 enemy.attr("src", "images/de3.gif"); // 임시 이미지 경로 설정
-                enemy.stop();
+                enemy.stop(); 
                 setTimeout(() => {
-                  enemy.remove(); // Remove the enemy character
+                  enemy.remove(); //enemy죽는모션 실행후삭제
                   setTimeout(() => {
-                    // Recreate the enemy character and append it back to the container
                     newEnemy = $("<img>") // newEnemy로 변수명 변경
-                      .attr("src", "images/mv.gif")
-                      .attr("id", "enemy")
-                      .css("left", "630px");
-
+                    .attr("src", "images/mv.gif")
+                    .attr("id", "enemy")
+                    .css("left", "630px");
+                    
                     $("#container").append(newEnemy);
                     enemy = newEnemy; // newEnemy를 enemy에 할당
                     enemyStart(); // enemyStart 함수 호출
-                  }, 0);
+                  }, 0); //enemy재등장시간
                   updateScore();
-                }, 500);
+                }, 500); //죽는모션 재생시간
               }
             });
-
-            
 
             if (isColliding(hero[0], enemy[0])) {
               hero.remove();
@@ -106,7 +100,7 @@
             }
 
             if (isGameOver) {
-              // Fade out the game
+              // Fade out Game
               $("#container").fadeOut(1000);
             }
           }, 1000 / 60);
@@ -273,6 +267,13 @@
         z-index: -2;
       }
 
+      #gameOver-score {
+        position: relative;
+        font-size: 50px;
+        color: white;
+        top: 50px;
+      }
+
       #restart {
         position: absolute;
         width: 100px;
@@ -297,7 +298,7 @@
 
       #key p span {
         position: relative;
-        top: -60px; /* 원하는 top 위치값으로 조정하세요 */
+        top: -60px; 
       }
     </style>
   </head>
@@ -321,6 +322,7 @@
             onclick="restartGame()"
           />
         </p>
+        <div id="gameOver-score">Score: 0</div>
       </div>
 
       <div id="key">
