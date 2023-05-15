@@ -77,12 +77,12 @@
             const enemyRight = enemyLeft + 50;
             const enemyTop = 50;
 
-            const isGameOver =
+            /*const isGameOver =
               heroLeft < enemyLeft &&
               enemyLeft < heroRight &&
               heroBottom < enemyTop;
 
-            console.log(isGameOver);
+            console.log(isGameOver);*/
 
             $(".projectile").each(function () {
               if (isColliding(this, enemy[0])) {
@@ -107,14 +107,17 @@
             });
 
             if (isColliding(hero[0], enemy[0])) {
+              //hero.stop();
+              //enemy.stop();
               hero.remove();
               enemy.remove();
+              $("#container").fadeOut(1000);  // Fade out Game종료
             }
 
-            if (isGameOver) {
+            /*if (isGameOver) {
               // Fade out Game
               $("#container").fadeOut(1000);
-            }
+            }*/
           }, 1000 / 60);
         }
 
