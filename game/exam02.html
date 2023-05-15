@@ -70,6 +70,38 @@ start-sc
           score += 100;
           $("#score").text(score);
           $("#gameOver-score").text("Score: " + score);
+
+          if (score == 1000) {
+            // score가 1000점  특별한 적을 나타내기
+            showSpecialEnemy();
+          }
+        }
+
+        let isSpecialEnemyShown = false; // 특별한 적 이미지를 보여준 상태인지 여부를 저장하는 변수
+        let specialEnemy; // 특별한 적 이미지 요소를 저장하는 변수
+
+        function showSpecialEnemy() {
+          if (!isSpecialEnemyShown) {
+            isSpecialEnemyShown = true; // 특별한 적 이미지를 보여준 상태로 설정
+
+            specialEnemy = $("<img>")
+              .attr("src", "images/special_enemy.gif")
+              .css({
+                position: "absolute",
+                left: "60px",
+                top: "115px",
+                width: "800px",
+                height: "420px",
+              });
+
+            $("body").append(specialEnemy);
+
+            // 일정 시간 후에 특별한 적 이미지를 제거하는 코드
+            setTimeout(function () {
+              specialEnemy.remove();
+              isSpecialEnemyShown = false; // 특별한 적 이미지를 보여주지 않은 상태로 설정
+            }, 3000); // 특별한 적 이미지를 보여주는 시간
+          }
         }
 
         function checkGameOver() {
@@ -81,13 +113,6 @@ start-sc
             const enemyLeft = Number(enemy.css("left").replace("px", ""));
             const enemyRight = enemyLeft + 50;
             const enemyTop = 50;
-
-            /*const isGameOver =
-              heroLeft < enemyLeft &&
-              enemyLeft < heroRight &&
-              heroBottom < enemyTop;
-
-            console.log(isGameOver);*/
 
             $(".projectile").each(function () {
               if (isColliding(this, enemy[0])) {
@@ -132,15 +157,20 @@ start-sc
         }
 
         function enemyStart() {
-          //속도조절
-          const speed = getRandomNumber(1000, 3000);
+          if (!isSpecialEnemyShown) {
+            // 속도조절
+            const speed = getRandomNumber(1000, 3000);
 
-          //적이 오른쪽에서 왼쪽으로 이동
-          enemy.animate({ left: "-100px" }, speed, function () {
-            enemy.css("left", "700px");
+            // 적이 오른쪽에서 왼쪽으로 이동
+            enemy.animate({ left: "-100px" }, speed, function () {
+              enemy.css("left", "700px");
 
-            enemyStart();
-          });
+              enemyStart();
+            });
+          } else {
+            // 특별한 적이 출현 중일 때는 enemy의 생성이 멈추도록 함
+            setTimeout(enemyStart, 3000);
+          }
         }
 
         function jump() {
