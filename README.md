@@ -11,3 +11,7 @@ HTML과 JQuery을 사용하여 웹게임 개발하기
 1.HTML5,CSS,JavaScript
 
 2.jQuery
+
+실행이미지
+---
+<img width="80%" src="https://github.com/HyeonJong1101/HTML/assets/126847307/6a8be939-9cab-4825-b19c-a497d6909bef" >
