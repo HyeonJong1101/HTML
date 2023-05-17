@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upcoming Movies</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        function loadMovies() {
+          const apiKey = "a64533e7ece6c72731da47c9c8bc691f";
+          const language = "ko-KR";
+          const page = 1;
+          const url =
+            "https://api.themoviedb.org/3/movie/upcoming" +
+            "?api_key=" +
+            apiKey +
+            "&language=" +
+            language +
+            "&page=" +
+            page;
+
+          $.getJSON(url, function (response) {
+            var movies = response.results;
+
+            movies.forEach(function (movie) {
+              var posterUrl = "https://image.tmdb.org/t/p/w500" + movie.poster_path;
+              var title = movie.title;
+              var releaseDate = movie.release_date;
+
+              var card = $("<div>").addClass("card");
+              var cardImg = $("<img>").addClass("card-img-top").attr("src", posterUrl);
+              var cardBody = $("<div>").addClass("card-body");
+              var cardTitle = $("<h5>").addClass("card-title").text(title);
+              var cardText = $("<p>").addClass("card-text").text("개봉일: " + releaseDate);
+
+              cardBody.append(cardTitle);
+              cardBody.append(cardText);
+              card.append(cardImg);
+              card.append(cardBody);
+
+              $("#movie-list").append(card);
+            });
+          });
+        }
+
+        loadMovies();
+      });
+    </script>
+
+    <style>
+      body {
+        padding: 20px;
+      }
+
+      .card {
+        margin-bottom: 20px;
+        width: 300px;
+      }
+
+      .card-img-top {
+        height: 450px;
+        object-fit: cover;
+      }
+
+      .card-title {
+        margin-bottom: 5px;
+      }
+
+      .card-text {
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Upcoming Movies</h1>
+    <div id="movie-list"></div>
+  </body>
+</html>
