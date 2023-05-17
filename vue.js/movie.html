@@ -15,9 +15,11 @@
 
   <body>
     <div id="app">
+      <input type="text" placeholder="제목" v-model="query"/>
+      {{query}}
       아이템 {{ movies.length }} 개
       <ul>
-        <li v-for="movie in movies">
+        <li v-for="movie in filteredMovies">
           <img :src="movie.posterUrl" alt="" class="poster" />
           {{ movie.title }}
         </li>
@@ -29,9 +31,16 @@
         el: "#app",
         data: {
           movies: [],
+          query:''
         },
         created: function () {
           this.fetchMovies();
+        },
+        computed:{
+            filteredMovies:function(){
+                return this.movies
+                .filter(movie => movie.title.includes(this.query))
+            }
         },
         methods: {
           fetchMovies: async function () {
